@@ -1,0 +1,62 @@
+{% assign menu = mobile_menu %}
+{% if mobile_menu == blank %}
+  {% assign menu = main_menu %}
+{% endif %}
+
+<div
+    style="--tw-bg-opacity: 0;"
+    class="sf-menu-wrapper sf-menu-wrapper-mobile touch-none hidden fixed z-[80] inset-0 transition-colors duration-300 bg-black"
+>
+    <div class="sf-menu__content overscroll-contain transition-transform -translate-x-full duration-300 md:w-[450px] z-50 bg-white text-black overflow-x-hidden h-full overflow-y-scroll">
+        <div class="flex flex-col">
+            <div class="sf-menu-content flex-grow flex flex-col justify-between transition-all opacity-0 opacity-100 duration-300">
+                <div class="w-full sf-menu-links pt-8">
+                  {% for link in linklists[menu].links %}
+                    {% if link.links != blank %}
+                        <li class="list-none sf-link flex items-center" data-url="{{ link.url }}">
+                            <a href="{{ link.url }}" class="w-full px-4 py-3 flex items-center justify-between relative"{% if link.url contains '#' %} data-toggle-submenu="1"{% endif %}>
+                                <span>{{ link.title }}</span>
+                            </a>
+                            <span class="sf__toggle-submenu-mb flex items-center justify-center" data-toggle-submenu="1">{% render 'icon', name: 'chevron-right', size: 'small' %}</span>
+                            <div class="sf-sub-links hidden absolute inset-y-0 bg-white flex-col left-full w-full">
+                                <div class="h-full overflow-y-scroll overscroll-contain">
+                                    <button class="back p-4 font-medium flex items-center" data-level="1">
+                                      {% render 'icon', name: 'arrow-left', size: 'small' %}
+                                      <span class="ml-3">{% render 'new-locale', key: 'layout.back' %}</span>
+                                    </button>
+                                  <ul class="sf-sub-links--level-2 pb-4">
+                                    {% for child in link.links %}
+                                      <li class="list-none sf-link flex items-center" data-url="{{ link.url }}">
+                                        <a href="{{ child.url }}" class="w-full px-4 py-3 flex items-center justify-between relative"{% if child.url contains '#' %} data-toggle-submenu="2"{% endif %}>
+                                          <span>{{ child.title }}</span>
+                                        </a>
+                                        {% if child.links != blank %}
+                                        <span class="sf__toggle-submenu-mb flex items-center justify-center" data-toggle-submenu="2">{% render 'icon', name: 'chevron-right', size: 'small' %}</span>
+                                        <div class="sf-sub-links hidden absolute inset-y-0 bg-white flex-col left-full w-full">
+                                          <div class="h-full overflow-y-scroll overscroll-contain">
+                                            <button class="back p-4 font-medium flex items-center" data-level="2">
+                                              {% render 'icon', name: 'arrow-left', size: 'small' %}
+                                              <span class="ml-3">{% render 'new-locale', key: 'layout.back' %}</span>
+                                            </button>
+                                            <ul class="sf-sub-links--level-2 pb-4">
+                                              {% render 'mega-menu-link' for child.links as link %}
+                                            </ul>
+                                          </div>
+                                        </div>
+                                        {% endif %}
+                                      </li>
+                                    {% endfor %}
+                                  </ul>
+                                </div>
+                            </div>
+                        </li>
+                    {% else %}
+                      {% render 'mega-menu-link' with link as link %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% render 'mega-menu-customer', section: section %}
+            </div>
+        </div>
+    </div>
+</div>

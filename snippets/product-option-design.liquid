@@ -1,0 +1,260 @@
+<style>
+{% if product.url == '/products/first-ever-plant-protein-enriched-with-methi-ashwagandha-ajwain-by-dr-vaidyas'%}
+ p.que_pack {
+    font-size: 0.99rem;}
+{% endif %}
+{% if product.url == '/products/drvaidyas-herbobuild-50-cap-b1g1'%}
+ p.que_pack {
+    font-size: 1.05rem;}
+  .div_pack {
+    height: 35px;
+}
+{% endif %}
+{% if product.url == '/products/plant-protein-powder-by-dr-vaidyas'%}
+ p.que_pack {
+    font-size: 1.05rem;}
+{% endif %}
+{% if product.url == '/products/copy-of-plant-protein-powder-first-ever-plant-protein-enriched-with-methi-ashwagandha-and-ajwain'%}
+ p.que_pack {
+    font-size: 1.05rem;}
+  p.buy_pack {
+    color: #3c743f;
+    font-size: 15px;}
+{% endif %}
+{% if product.url == '/products/plant-protein-powder-chocolate-first-ever-plant-protein-enriched-with-methi-ashwagandha-and-ajwain-by-dr-vaidyas'%}
+ p.que_pack {
+    font-size: 1.05rem;}
+  .div_pack {
+    height: 50px;
+}
+{% endif %}
+{% if product.url == '/products/plant-protein-powder-chocolate'%}
+ p.que_pack {
+    font-size: 1.05rem;
+ }
+  .div_pack {
+    height: 50px;
+}
+{% endif %}
+
+{% if product.url == '/products/plant-protein-powder'%}
+  p.que_pack {
+    font-size: 0.975rem;
+  }
+  p.discount_amount {
+    font-size: 15px;
+  }
+  .div_pack {
+    height: 70px;
+}
+  p.pri_taxes {
+    font-size: 11px;
+  }
+  @media only screen and (max-width: 600px)  {
+     p.que_pack {
+    font-size: 0.895rem;
+  }
+     .div_pack {
+    height: 50px;
+}
+  }
+  {% endif %}
+</style>
+
+
+
+
+
+<!-- *********************************** -->
+{%- assign values_limit = settings.pcard_limit_values_number -%}
+{%- assign rest_values = 0 -%}
+
+{%- if values_limit == 0 or is_product_card != true -%}
+  {%- assign values_limit = 99 -%}
+{%- elsif option.values.size > values_limit -%}
+  {%- assign rest_values = option.values.size | minus: values_limit -%}
+{%- endif -%}
+
+{%- case design -%}
+  {%- when 'dropdown' -%}
+    <div class="inline-flex flex-wrap">
+      <label for="{{ option.name }} {{ option.position }}"></label>
+      <div class="sf__select-bordered">
+        <select
+          class="sf-product-variant-option-dropdown h-11 border border-color-border rounded w-full pl-4 pr-10 cursor-pointer"
+        >
+          {% for value in option.values %}
+            <option
+              {% if option.selected_value == value %}selected{% endif %}
+              class="product-option-item"
+              data-option-position="{{ option.position }}"
+              data-value="{{- value | escape -}}"
+            >
+              {{- value -}}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  {% when 'image' %}
+    <div class="inline-flex flex-wrap">
+      {% for value in option.values %}
+        {%- if forloop.index0 < values_limit -%}
+          <div
+            {% if option.selected_value == value %}data-selected="true"{% endif %}
+            class="product-option-item border border-color-border flex items-center justify-center mr-2 mb-2 cursor-pointer"
+            data-option-position="{{ option.position }}"
+            data-option-type="image"
+            data-value="{{- value | escape -}}"
+            style="--option-aspect-ratio: {{ product.featured_image.aspect_ratio | default: '1' }}"
+          >
+            {{- value -}}
+          </div>
+        {%- endif -%}
+      {% endfor %}
+      {% render 'product-option-rest-values',
+        class: 'sf-po__option-button',
+        product_handle: product_handle,
+        rest_values: rest_values
+      %}
+    </div>
+  {% when 'color' %}
+    <div class="inline-flex flex-wrap">
+      {% for value in option.values %}
+        {%- if forloop.index0 < values_limit -%}
+          <div class="sf__tooltip-item sf__tooltip-top">
+            <div class="sf__variant-swatch flex justify-center items-center">
+              <div
+                {% if option.selected_value == value %}data-selected="true"{% endif %}
+                class="product-option-item flex items-center justify-center cursor-pointer text-white"
+                data-option-position="{{ option.position }}"
+                data-option-type="color"
+                data-value="{{- value | escape -}}"
+              >
+                {{- value -}}
+              </div>
+            </div>
+            <span class="sf__tooltip-content capitalize">{{- value -}}</span>
+          </div>
+        {%- endif -%}
+      {% endfor %}
+      {% render 'product-option-rest-values',
+        class: 'color-design',
+        product_handle: product_handle,
+        rest_values: rest_values
+      %}
+    </div>
+  {% when 'button' %}
+    <div class="button_price{% if is_size %} mr-4{% endif %}">
+       {% for value in option.values %}
+        {%- if forloop.index0 < values_limit -%}
+          {%- assign i = forloop.index0 -%}
+           <div
+            {% if option.selected_value == value %}data-selected="true"{% endif %}
+           class="product-option-item sf-po__option-button"
+            data-option-position="{{ option.position }}"
+            data-option-type="{{ design }}"
+            data-value="{{- value | escape -}}" id="box_main" >
+          <!--   {{- value -}} -->
+      <div class="main_pri">  
+        <!--HH Start-->  
+          <div class="div_pack">
+
+                         <p class="que_pack"> {{- value -}}</p>
+          {% for v1 in product.variants %}
+                {%- if forloop.index0 == i -%}
+                   <p class="buy_pack" >{{v1.metafields.custom.product_pack}}</p>
+          </div>
+                  <!-- Hemant Save code start -->
+                  {% if v1.compare_at_price > v1.price %} 
+                    <p class="Save_price"> Save ₹{{ v1.compare_at_price | minus: v1.price | minus_by: v1.compare_at_price | divided_by: 100 }} | {{ v1.compare_at_price | minus: v1.price | times: 100.0 | divided_by: v1.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}% OFF
+              <!--      <p class="Save_price"> Save ₹{{ v1.compare_at_price | minus: v1.price | minus_by: v1.compare_at_price | divided_by: 100 }} <span style="background-color:#FF0000;"> {{ v1.compare_at_price | minus: v1.price | times: 100.0 | divided_by: v1.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}% OFF</span>
+                    <span class="py-0.5 px-2 font-medium rounded-xl prod__tag prod__tag-saving prod__tag-discounted">{{ v1.compare_at_price | minus: v1.price | times: 100.0 | divided_by: v1.compare_at_price | money_without_currency | times: 100 | remove: '.0'}}% </span> -->
+                    
+                    </p>
+            
+                               
+                    {% endif %}                  
+                  <!-- Hemant Save code end -->
+                  
+                  <!-- Hemant Price code start -->
+                  <p class="price_code">₹ {{ v1.price | divided_by: 100 }}</p>   
+                 
+                  <!-- Hemant Save code start -->    
+                  <p class="price_discount">
+                  <p class="dis_code"><span>₹ </span>{{ v1.compare_at_price | divided_by: 100 }}</p>
+                    {% assign discount = '' %}                  
+                    {% if v1.compare_at_price >  v1.price %}
+                      {% assign discount = v1.compare_at_price | minus: v1.price | times: 100 | divided_by: v1.compare_at_price | append: '%' %}
+                    {% endif %}
+                 
+              <!-- Hemant Save code start -->   
+                       {%- if v1.metafields.custom.capsule.value != blank -%}
+                       <p class="Capsule_code">{{ v1.metafields.custom.capsule }} CAPS ({{ v1.metafields.custom.month  }} Months)</p> 
+                      {%- elsif v1.metafields.custom.weight.value  != blank -%}
+                     <p class="product_weight">{{v1.metafields.custom.weight }} GMS ({{ v1.metafields.custom.month  }} Months)</p> 
+                      {%- elsif v1.metafields.custom.weight.value  != blank -%}
+                     <p class="product_weight">{{v1.metafields.custom.litters }} Ltrs ({{ v1.metafields.custom.month  }} Months)</p>  
+                      {%- elsif v1.metafields.custom.weight.value  != blank -%}
+                     <p class="product_weight"> {{ v1.metafields.custom.month  }} Months </p>   
+                         {%- else- %}
+                      <p class="product_weight">&nbsp; </p>     
+                         {%- endif -%}   </p> 
+                  
+                  <!-- <span> {{ v1.price | divided_by: v1.metafields.custom.capsule }} /Capsule </span><br> <br> -->
+              {% comment %}
+                  <p class="discount_amount">  {{discount}}  OFF</p>  -->
+                  <!-- code end -->                                  
+                  <!-- Hemant Save code start -->                  
+               <p class="pri_taxes">(Inclusive of all taxes)</p>
+                  {% endcomment %}
+                   <!-- code end -->                 
+                    <!-- Hemant Start Best Seller -->        
+                    <p class="Best_Seller" >{{ v1.metafields.custom.bestseller }}</p>
+      
+                    <!-- Best Seller End -->   
+                        
+                  {%- endif -%} 
+                          
+          {% endfor %} 
+         <!--HH End -->
+         </div> 
+      </div>
+       {%- endif -%}
+      {% endfor %}
+
+    {% render 'product-option-rest-values',
+        class: 'sf-po__option-button',
+        product_handle: product_handle,
+        rest_values: rest_values
+      %}
+   </div>
+  {%- else -%}
+    <div class="inline-flex flex-wrap {% if is_size %} mr-4{% endif %}" style="margin: 0 -5px;">
+      {% for value in option.values %}
+<center> Add your desired text
+        {%- if forloop.index0 < values_limit -%}
+          <div
+            {% if option.selected_value == value %}data-selected="true"{% endif %}
+            class="product-option"
+            data-option-position="{{ option.position }}"
+            data-option-type="default"
+            data-value="{{- value | escape -}}"
+          >
+            {{- value -}}
+          </div>
+        {%- endif -%}
+      {% endfor %}
+      {% render 'product-option-rest-values',
+        class: 'sf-po__option-button default-design',
+        product_handle: product_handle,
+        rest_values: rest_values
+      %}
+    </div>
+{%- endcase -%}
+ <script>
+  $(".product-option-item").click(function(){
+    $('.product-option-item').css('background','white');
+    $(this).css({"background-color", "#edac4091");
+    });
+</script>

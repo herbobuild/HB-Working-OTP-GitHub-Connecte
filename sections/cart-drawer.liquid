@@ -1,0 +1,80 @@
+{% assign f_cart_countdown = shop.metafields.foxecom-bs-kit.cart-countdown.value | default: shop.metafields.foxecom-bs-kit.cart-countdown %}
+<div
+  style="--tw-bg-opacity: 0;"
+  class="scd__wrapper touch-none hidden transition-colors duration-300 bg-black fixed z-[100] inset-0"
+>
+  <div class="scd__content transition-transform duration-300 translate-x-0 translate-x-full ml-auto min-h-full md:w-[450px] bg-white z-50">
+    <button class="scd__close p-2 cursor-pointer absolute">
+      {% render 'icon', name: 'times', size: 'large' %}
+    </button>
+    <form action="{{ routes.cart_url }}" method="post" class="checkout-form flex flex-col h-full" novalidate>
+      <div class="scd__header mx-6 py-4 md:pt-6">
+        <h3 class="text-2xl font-medium">{{ 'cart.general.title' | t }}</h3>
+        {% if f_cart_countdown.show_on_drawer == true and template.name != 'cart' %}
+          {% render 'foxkit-cart-countdown' %}
+        {% endif %}
+        {% render 'foxkit-cart-goal' %}
+      </div>
+      <div class="scd__body sf__custom_scroll overscroll-contain px-6 pb-4 flex flex-col flex-grow">
+        {%- if cart.items.size > 0 -%}
+          <div class="scd__items">
+            {% for item in cart.items %}
+              {% render 'cart-drawer-item', item: item %}
+            {% endfor %}
+          </div>
+        {%- else -%}
+          <div class="scd-empty-msg">
+            {{ 'cart.general.empty' | t }}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="scd__footer py-4 px-6">
+        {% render 'cart-addons' %}
+        <div class="scd__summary mb-4 pt-4" data-cart-summary>
+          <div data-discounts>
+            <ul class="scd-cart__discounts" role="list" data-discounts-list>
+            {% unless cart.cart_level_discount_applications.size == 0 %}
+                {% for discount in cart.cart_level_discount_applications %}
+                  <li>
+                    {% render 'icon', name: 'discount' %}
+                    <span>{{ discount.title | upcase }}&nbsp;(-{{ discount.total_allocated_amount | money }})</span>
+                  </li>
+                {% endfor %}
+            {% endunless %}
+            </ul>
+          </div>
+          <div class="scd__subtotal flex justify-between" data-cart-subtotal>
+            <span class="font-medium">{{ 'cart.general.subtotal' | t }}</span>
+            <span class="scd__subtotal-price font-medium sf-currency" data-cart-subtotal-price>{{ cart.total_price | money }}</span>
+          </div>
+        </div>
+        <div class="flex flex-col items-center">
+          {% assign show_terms = false %}
+          {% if settings.agree_text != blank and settings.show_agree_on_cart %}
+            {% render 'agree-terms-checkbox' %}
+            {% assign show_terms = true %}
+          {% endif %}
+          {% render 'gokwik-checkout' %}
+          <button type="submit" class="sf__btn sf__btn-primary w-full scd__checkout relative" name="checkout"{% if show_terms %} data-terms-action disabled{% endif %}>
+            <span>{% if settings.btnTxt %}{{settings.gk-merchant-btnText}}{%else%}{{ 'cart.general.checkout' | t }}{% endif %}</span>
+            {% render 'icon', name: 'spinner', size: 'medium-small' %}
+          </button> 
+          {%- if settings.cart_drawer_show_accelerated_button and additional_checkout_buttons -%}
+            <div class="additional-checkout-buttons w-full">
+              {{ content_for_additional_checkout_buttons }}
+            </div>
+          {%- endif -%}
+          <a class="underline mt-2" href="{{ routes.cart_url }}">
+            {{ 'cart.general.viewcart' | t }}
+          </a>
+        </div>
+        {% if settings.cart_drawer_trust_badge %}
+        <div class="scd__trust-badge mt-2">
+          <img src="{{ settings.cart_drawer_trust_badge | img_url: '840x' }}" loading="lazy" width="400" height="100" alt="Trust secure badge">
+        </div>
+        {% endif %}
+      </div>
+      <div class="scd__overlay inset-0"></div>
+    </form>
+  </div>
+</div>

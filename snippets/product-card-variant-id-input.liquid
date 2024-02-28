@@ -1,0 +1,7 @@
+{%- assign variant_id = product.first_available_variant.id -%}
+{%- assign selected_variant_id = '' -%}
+{%- if section.settings.change_product_variant_on_fitlering == true -%}
+  {%- assign variant_id = product.selected_or_first_available_variant.id -%}
+  {%- assign selected_variant_id = product.selected_variant.id %}
+{%- endif -%}
+<input hidden name="id" required value="{{ variant_id }}" data-selected-variant="{{ selected_variant_id }}">

@@ -1,0 +1,30 @@
+<!-- <div class="form-success hide" data-reset-success>
+  {{ 'customer.recover_password.success' | t }}
+</div> -->
+<div class="text-center sf__page-header section__header">
+  <h1 class="section__heading">{{ 'customer.login.title' | t }}</h1>
+  {% render 'breadcrumb', container: 'container', justify: 'center' %}
+</div>
+<div class="sf-customer__forms pb-7 md:pb-15 md:w-11/12 lg:w-3/4 xl:w-2/3 2xl:w-1/2 md:flex mx-auto">
+  <div class="sf-customer__login mx-4 lg:mx-10 md:w-1/2">
+    <h3 class="text-2xl font-medium mb:3 md:mb-6">{{ 'customer.login.title' | t }}</h3>
+    {% render 'form__login' %}
+  </div>
+  <div class="sf-customer__reset-password hidden mx-4 lg:mx-10 md:w-1/2">
+    <h3 class="text-2xl font-medium">{{ 'customer.recover_password.title' | t }}</h3>
+    <p class="mt-4 mb-2 text-color-secondary">{{ 'customer.recover_password.subtext' | t }}</p>
+    {% render 'form__recover-password' %}
+  </div>
+  <div class="mx-4 lg:mx-10 md:w-1/2 mt-12 md:mt-0">
+    <h3 class="text-2xl font-medium mb-6">{{ 'customer.login.new_customer' | t }}</h3>
+    <p class="mb-6 text-color-secondary">
+        {{ 'customer.register.description' | t }}
+    </p>
+    <a
+      class="sf__btn sf__btn-primary"
+      href="{{ routes.account_register_url }}"
+    >
+      {{ 'customer.register.title' | t }}
+    </a>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+<style>
+  .phone-error {
+    display: none;
+    color: red;
+    padding-top: 10px;
+  }
+  .phone-email-error {
+    color: red;
+    display: none;
+  }
+</style>
+
+<script type="text/javascript" author="Marmeto">
+  function _isNumberCheck(evt) {
+  	var charCode = (evt.which) ? evt.which : event.keyCode
+  	if (charCode > 31 && (charCode < 48 || charCode > 57))
+  		return false;
+  	return true;
+  }
+
+  //Function to validate phone number
+  function _isNumberDigit($input) {
+  	var $countryInputValue = $('#checkout_shipping_address_country').val();
+
+  	if ($countryInputValue == "India") {
+  		var $inputNumber = $input.val(),
+  			$trimNumber = $inputNumber.replace(/ /g, '');
+
+  		$input.val($trimNumber);
+
+  		if ($input.val().length == 10) {
+  			if ($trimNumber.match(/^[6-9]\d{9}$/)) {
+  				$('.phone-error').hide();
+  				return true;
+  			} else {
+  				$('[data-address-field="phone"]').addClass("field--error");
+  				$('.phone-error').show();
+  				if ($('#error-for-phone').length > 0) {
+  					$('.phone-error').hide();
+  				}
+  				return false;
+  			}
+  		} else {
+  			$('[data-address-field="phone"]').addClass("field--error");
+  			$('.phone-error').show();
+  			if ($('#error-for-phone').length > 0) {
+  				$('.phone-error').hide();
+  			}
+  			return false;
+  		}
+  	} else {
+  		return true;
+  	}
+  }
+
+  $(document).ready(function() {
+  	//Append the message
+  	$('.field[data-address-field="phone"]').append('<div><p class="phone-error">Please enter valid 10 digit mobile number</p></div>');
+  	$('[data-email-or-phone-input-wrapper="true"]').append('<div><p class="phone-email-error">Please enter valid email or mobile number</p></div>');
+  	$('.phone-email-error').hide();
+
+  	//Phone Field
+  	var $phoneInput = $('.field[data-address-field="phone"] input');
+  	var $contactForm = $('[data-step="contact_information"] > form');
+
+  	//On keypress allow only number
+  	$phoneInput.keypress(function(event) {
+  		return _isNumberCheck(event);
+  	});
+  	$("#checkout_email_or_phone").keydown(function(event) {
+  		$('.phone-email-error').hide();
+  		$('.phone-error').hide();
+  		$('[data-address-field="phone"]').removeClass("field--error");
+  	});
+  	//On form submit validate number
+  	$contactForm.on('submit', function() {
+      var $emailInputValue = $("#checkout_email_or_phone").val();
+      let isEmail = /\S+@\S+\.\S+/.test($emailInputValue);
+      if (!isEmail) {
+          let validEmailPhone = _isNumberDigit($("#checkout_email_or_phone"))
+          if (validEmailPhone) {
+              return true;
+          } else {
+              $('.phone-email-error').show();
+              $('[data-address-field="phone"]').removeClass("field--error");
+              $('.phone-error').hide();
+              return false;
+          }
+      } else {
+          var $phoneInputValue = $('.field[data-address-field="phone"] input');
+          return _isNumberDigit($phoneInputValue);
+      }
+  	});
+
+
+  	//Input on click remove error message
+  	$phoneInput.on('click', function() {
+  		$('[data-address-field="phone"]').removeClass("field--error");
+  		$('.phone-error').hide();
+  	});
+  });
+</script>

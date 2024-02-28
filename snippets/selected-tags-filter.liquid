@@ -1,0 +1,20 @@
+{% if current_tags.size > 0 %}
+  <div class="filtered-tags flex flex-wrap items-center">
+    <ul id="sf-filter-by-items" class="flex flex-wrap">
+      {%- for tag in current_tags -%}
+        <li class="filtered-item" data-tag-filter>
+          <span class="mr-2">{% render 'icon', name: 'times', size: 'small' %}</span>
+          {{- tag | link_to_remove_tag: tag -}}
+        </li>
+      {%- endfor -%}
+      <li class="text-color-secondary font-normal underline hover:text-color-primary px-3 py-1.5" data-tag-filter>
+        <a 
+          aria-label="{{ 'collections.sidebar.clear_all' | t }}"
+          href="{{ collection.url }}?sort_by={{ collection.sort_by }}"
+        >
+          {{ 'collections.sidebar.clear_all' | t }}
+        </a>
+      </li>
+    </ul>
+  </div>
+{% endif %}

@@ -1,0 +1,20 @@
+<link rel="canonical" href="{{ canonical_url }}">
+{%- if template.name == 'product' -%}
+<link rel="preload" as="style" href="{{ 'product-template.aio.min.css' | asset_url }}">
+{%- endif -%}
+{%- if template.name == 'collection' or template.name == 'list-collections' -%}
+<link rel="preload" as="style" href="{{ 'collection.aio.min.css' | asset_url }}">
+{%- endif -%}
+<link rel="preload" as="style" href="{{ 'theme.aio.min.css' | asset_url }}">
+
+{% comment %} Minimog prefetch resources {% endcomment %}
+<link rel="dns-prefetch" href="{{ canonical_url }}" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.shopify.com" crossorigin>
+<link rel="preconnect" href="{{ canonical_url }}" crossorigin>
+<link rel="preconnect" href="https://cdn.shopify.com" crossorigin> 
+{% render 'hs-defer-css' with filename: 'chunk.aio.min.css', pages: 'collection,index,product' | split: ',', minify: false, local: true %}
+{% render 'hs-defer-css' with filename: 'custom.aio.min.css', pages: 'collection,index,product' | split: ',', minify: false, local: true %}
+<link rel="preload" href="{{ 'app.min.aio.min.js' | asset_url }}" as="script">
+<link rel="preload" href="{{ 'foxkit-app.min.aio.min.js' | asset_url }}" as="script">
+<link rel="preload" href="{{ 'lazysizes.min.aio.min.js' | asset_url }}" as="script">
+{% comment %} End Minimog prefetch resources {% endcomment %}

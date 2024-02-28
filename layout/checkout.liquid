@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ 'mm-checkout-style.css' | asset_url | stylesheet_tag }}
+    
+    {{ checkout_scripts }}
+
+    <script>
+      window.$ = Checkout.$;
+    </script>
+
+    <style>
+      .banner {
+        display: block !important;
+      }
+      @media (max-width: 749px) {
+        .banner {
+          background: {{ settings.checkout_bgColor }} url("{{ settings.mobile_image_url }}") center center no-repeat !important;
+          background-size: contain !important;
+        }
+      }
+      @media (min-width: 750px) {
+        .banner {
+          background: {{ settings.checkout_bgColor }} url("{{ settings.desktop_image_url }}") center center no-repeat !important;
+          background-size: contain !important;
+          background-repeat: no-repeat !important;
+        }
+      }
+      .banner {
+          height: 25vw;
+      }
+      
+      @media (min-width: 1000px) {
+        .order-summary__section--product-list {
+          height: 7em;
+        }
+        .order-summary__sections {
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <!-- Checkout Banner -->
+    <a href="/collections/all">
+      <header class="banner" style="padding: 0" data-header role="banner">
+        <div class="wrap">
+          <!-- {{ content_for_logo | replace: 'https://drvaidyas.com/', '/collections/all'  }} -->
+        </div>
+      </header>
+    </a>
+
+    {{ order_summary_toggle }}   
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header" role="banner">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </header>
+          <main class="main__content" role="main">
+            {{ content_for_layout }}
+          </main>
+          <footer class="main__footer" role="contentinfo">
+            {{ content_for_footer }}
+          </footer>
+        </div>
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+    {% render 'marmeto-email-mobile-validation' %}
+    {% section 'marmeto-checkout-discounts' %}
+
+    {% if settings.enable_otp %}
+      {% render 'marmeto-otp-verification' %}
+    {% endif %}
+    
+    {% if settings.checkout_upsell and order %}
+      {% render 'thank-you-upselling' %} 
+    {% endif %}
+    
+    {{ tracking_code }}
+  </body>
+</html>

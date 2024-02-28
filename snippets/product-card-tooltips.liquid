@@ -1,0 +1,27 @@
+{% capture is_preorder %}{% render 'check-preorder', product: product %}{% endcapture %}
+
+{% if tooltips == nil %}
+  {% assign tooltips = 'compare,quickview' %}
+{% endif %}
+{%- assign tooltip_items = tooltips | split: ',' -%}
+
+{%- capture class_name -%}
+  sf__tooltip-{{ position | default: 'left' }}
+{%- endcapture -%}
+
+{%- if settings.show_wishlist_button and card_style != "3" -%}
+  {% render 'wishlist-snippet', product: product, class_name: class_name %}
+{%- endif -%}
+
+{% if is_preorder == "true" %}
+  <input type="hidden" name="properties[_{% render 'new-locale', key: 'products.product.preorder_note' %}]" value="true">
+  <input type="hidden" name="properties[_foxDiscount[plugin]]" value="PreOrder">
+  <input type="hidden" name="properties[_foxDiscount[offer_id]]" value="{{ product.metafields.foxkit.preorder.id }}">
+{% endif %}
+
+{%- for tooltip in tooltip_items -%}
+  {%- assign settings_key = 'show_' | append: tooltip | append: '_button' | replace: 'add-to-cart', 'cart' -%}
+  {%- if settings[settings_key] -%}
+    {% render 'tooltip', type: tooltip, product: product, class_name: class_name, is_preorder: is_preorder %}
+  {%- endif -%}
+{%- endfor -%}

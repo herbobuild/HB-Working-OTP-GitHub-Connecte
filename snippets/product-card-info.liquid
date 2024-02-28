@@ -1,0 +1,25 @@
+<div class="mt-3 lg:mt-5">
+  <div class="max-w-full w-full">
+    {%- if show_vendor -%}
+      <span class="sf__pcard-vendor block uppercase text-xs mb-2">{{ product.vendor }}</span>
+    {%- endif -%}
+    {% if show_title == true %}
+      <h3 class="block text-base">
+        <a href="{{ product.url }}" class="block mb-[5px] leading-normal sf__pcard-name font-medium truncate-lines hover:text-color-secondary{% if settings.uppercase_prd_name %} uppercase{% endif %}">
+          {{ product.title }}
+        </a>
+      </h3>
+    {% endif %}
+    {% render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: true, product: product %}
+    {% if settings.show_review_badge %}
+      <div class="sf-pcard__reviews">
+        {% render 'product-reviews-app__badge', product: product %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="sf__pcard-price leading-normal">
+    {% render 'product-prices', product: product, is_product_card: true  %}
+  </div>
+  {% render 'product-card-variant-option', product: product %}
+</div>

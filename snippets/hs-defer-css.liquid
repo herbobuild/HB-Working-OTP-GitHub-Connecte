@@ -1,0 +1,26 @@
+{%comment%}
+    Defers the CSS using "print" media, so that the browser downloads it and loads it asynchronously.
+    E.g. {% render 'hs-defer-css' with filename: 'filename', pages: 'index','product','collection', local: true %}
+{%endcomment%}
+
+{%- if pages contains template.name -%}
+  {%- if local -%}
+    {%- if minify and request.design_mode == false -%}
+      <link rel="stylesheet" {% if linkId %}id="{{ linkId }}"{% endif %} href="{{ filename | asset_url | append: '&enable_css_minification=1' }}" media="print" onload="this.media='all'; this.onload = null">
+    {%- else -%}
+      <link rel="stylesheet" {% if linkId %}id="{{ linkId }}"{% endif %} href="{{ filename | asset_url }}" media="print" onload="this.media='all'; this.onload = null">
+    {%- endif -%}
+  {%- else -%}
+    <link rel="stylesheet" {% if linkId %}id="{{ linkId }}"{% endif %} href="{{ filename }}" media="print" onload="this.media='all'; this.onload = null">
+  {%- endif -%}
+{%- else -%}
+  {%- if local -%}
+    {%- if minify and request.design_mode == false -%}
+      <link rel="stylesheet" {% if linkId %}id="{{ linkId }}"{% endif %} href="{{ filename | asset_url | append: '&enable_css_minification=1' }}">
+    {%- else -%}
+      <link rel="stylesheet" {% if linkId %}id="{{ linkId }}"{% endif %} href="{{ filename | asset_url}}">
+    {%- endif -%}
+  {%- else -%}
+    <link rel="stylesheet" {% if linkId %}id="{{ linkId }}"{% endif %} href="{{ filename }}">
+  {%- endif -%}
+{%- endif -%}

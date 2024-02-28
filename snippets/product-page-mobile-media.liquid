@@ -1,0 +1,78 @@
+{% assign aspect_ratio = product.featured_image.aspect_ratio | default: 1 %}
+<div class="product-mb__media product-page-mobile__slider {% if aspect_ratio < 1 %}px-5{% endif %}">
+  {% if product.media.size <= 1 %}
+    <div class="flex justify-center items-center relative sf-prod-media-item media-type-{{ product.featured_media.media_type }}" data-index="0">
+      {% render 'media', media: product.featured_media, render_by_image: true %}
+      {% render 'product-zoom-button', position: 'right-5 bottom-2.5' %}
+    </div>
+  {% else %}
+    <div class="swiper-container block relative">
+      <div class="swiper-wrapper mobile">
+        {% for media in product.media %}
+          <div data-index="{{ forloop.index0 }}" class="swiper-slide sf-prod-media-item media-type-{{ media.media_type }}" data-media-type="{{ media.media_type }}">
+            {%- assign render_by_image = false -%}
+            {%- if media.media_type == 'model' -%}
+              {%- assign render_by_image = true -%}
+              {% comment %}
+              <button
+                class="absolute z-10 flex justify-center items-center rounded-full product__xr-button"
+                type="button"
+                aria-label="{%- render 'new-locale', key: 'products.product.xr_button_label' -%}"
+                data-shopify-xr
+                data-shopify-model3d-id="{{ media.id }}"
+                data-shopify-title="title"
+                data-shopify-xr-hidden
+              >
+                {% render 'icon', name: '3d-model', size: 'small' %}
+              </button>
+              {% endcomment %}
+            {%- else -%}
+              {% render 'product-zoom-button', position: 'right-5 bottom-2.5' %}
+            {%- endif -%}
+            {% render 'media', media: media, aspect_ratio: media.aspect_ratio, render_by_image: render_by_image %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% if section.settings.show_nav_media_mobile %}
+      {% render 'product-nav-media-mobile' %}
+    {% endif %}
+    {% if section.settings.show_pagination_mobile %}
+      <div class="swiper-pagination"></div>
+    {% endif %}
+  {% endif %}
+
+  {% if section.settings.show_atwl %}
+    {% assign wishlist_app = settings.wishlist_app %}
+    {% if wishlist_app == 'growave' %}
+      {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
+      <div class="product-mb__atwl">
+        {% unless the_snippet_fave_icon contains 'Liquid error' %}
+          {{ the_snippet_fave_icon }}
+        {% else %}
+          {% render 'mm-ssw-widget-faveicon' with product.id %}
+        {% endunless %}
+      </div>
+    {% else %}
+      {% render 'tooltip', type: 'wishlist', product: product, class_name: "sf__tooltip-top product-mb__atwl" %}
+    {% endif %}
+  {% endif %}
+</div>
+
+{%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
+{%- if first_3d_model -%}
+<div class="mt-4">
+  <button
+    class="custom-xr-button sf__btn w-full items-center justify-center"
+    type="button"
+    aria-label="{%- render 'new-locale', key: 'products.product.xr_button_label' -%}"
+    data-shopify-xr
+    data-shopify-model3d-id="{{ first_3d_model.id }}"
+    data-shopify-title="title"
+    data-shopify-xr-hidden
+  >
+    {% render 'icon', name: '3d-model', size: 'small' %}
+    <span class="ml-2">{%- render 'new-locale', key: 'products.product.xr_button' -%}</span>
+  </button>
+</div>
+{%- endif -%}

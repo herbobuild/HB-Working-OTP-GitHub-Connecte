@@ -1,0 +1,12 @@
+{%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+<select name="sort_by" aria-describedby="a11y-refresh-page-message">
+  {%- for option in collection.sort_options -%}
+    <option 
+      value="{{ option.value | escape }}"
+      {% if option.value == sort_by %} selected="selected"{% endif %}
+      data-index="{{ forloop.index0 }}"
+    >
+      {{ option.name | escape }}
+    </option>
+  {%- endfor -%}
+</select>

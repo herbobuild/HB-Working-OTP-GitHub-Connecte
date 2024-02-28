@@ -1,0 +1,315 @@
+/*-------------------------------
+  OTP MODAL STYLE STARTS 
+-------------------------------*/
+.new-modal { 
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: none;
+  position: fixed;  
+  overflow: hidden;
+  margin-top: 0 !important;
+  max-width: 100% !Important;
+  width: 100% !important;
+  height: 100% !important;  
+  background-color: #000;
+  background-color: rgba(0,0,0,0.6) !Important;
+}
+.otp-content {  
+  margin: auto;
+  padding: 0px;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: #00000087;
+}
+.mm-wrapper {
+  padding: 20px;
+  display: flex;
+  font-family: sans-serif;
+  justify-content: center;
+  align-items: center;  
+}
+.mm-wrapper .cod_modal {
+  width: 344px;
+}
+.otp-error {
+  color: red;
+}
+.otp-success {
+  color: green;
+}
+.mm-wrapper .modal-header {
+  z-index: 3;
+  color: #ffffff;  
+  padding: 24px;
+  overflow: hidden;
+  max-height: 128px;
+  position: relative;
+  background-color: #51BA69;
+  -webkit-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;  
+}
+.mm-wrapper .modal-header::before {  
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: "";
+  position: absolute;
+  background-image: -webkit-gradient(linear, left top, right bottom, from(rgba(255, 255, 255, 0.2)), to(rgba(0, 0, 0, 0.2)));
+  background-image: -webkit-linear-gradient(top left, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
+  background-image: -o-linear-gradient(top left, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
+  background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
+}
+.mm-wrapper .modal-close {  
+  top: 0;
+  right: 0;
+  z-index: 1;  
+  color: #fff;
+  width: 24px;  
+  opacity: 0.8;
+  cursor: pointer;
+  font-size: 27px;
+  text-align: center;
+  line-height: 26px;
+  position: absolute;
+}
+.mm-wrapper .mm-logo {
+  float: left;
+  padding: 8px;
+  width: 64px;
+  height: 64px;
+  background: #fff;
+  text-align: center;
+  position: relative;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  line-height: 62px;  
+  margin-right: 24px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.mm-wrapper .mm-logo img {
+  vertical-align: middle;
+  max-height: 100%;
+  max-width: 100%;
+}
+.mm-wrapper .inner-head {
+  white-space: nowrap;
+  position: relative;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.mm-wrapper .brand-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+.mm-wrapper .brand-desc {
+  padding-top: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  opacity: 0.8;
+}
+.mm-wrapper .brand-desc a {
+  color: #fff;
+}
+.mm-wrapper .mm-amount {
+  font-size: 18px;
+  margin-top: 12px;
+}
+.mm-wrapper .form-wrapper {  
+  z-index: 1;
+  background: #fff;
+  position: relative;
+  -webkit-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;  
+}
+.mm-wrapper .inner-form {  
+  top: 0;
+  bottom: 0;
+  padding: 20px 0 0;
+}
+.mm-wrapper .skip-otp {
+  display: none;
+  cursor: pointer;
+  text-align: center;
+  padding-top: 10px;
+  width: 100%;
+  color: green;
+  text-decoration: underline;
+}
+.mm-wrapper .otp-block {
+  padding: 0 24px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.mm-wrapper .element-wrap {
+  height: 65px;
+}
+.mm-wrapper .contact-form {
+  color: #424242;
+  border-bottom: 1px solid #ebedf0;
+  position: relative;
+}
+.mm-wrapper .contact-form .contact-icon {
+  position: absolute;
+  font-size: 20px;
+  bottom: 6px;
+  right: 0;
+  color: #8f8f8f;
+}
+.mm-wrapper .contact-form .contact-label {
+  -webkit-transform: scale(0.86) translateY(-20px);
+  -ms-transform: scale(0.86) translateY(-20px);
+  transform: scale(0.86) translateY(-20px);
+  -webkit-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+  color: #757575;
+  left: 0;
+  font-size: 11px;
+  z-index: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.mm-wrapper .contact-form input {
+  transition: 0.3s;
+  font-size: inherit;
+  border: none;
+  outline: none;
+  background: none;
+  display: block;
+  width: 100%;
+  line-height: 19px;
+  letter-spacing: 1px;
+  padding: 4px 0 7px 0;
+  margin: 0;
+  position: relative;
+  color: inherit;
+}
+.mm-wrapper .contact-form input::-webkit-input-placeholder {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #bbb;
+  display: block !important;
+}
+.mm-wrapper .contact-block {
+  padding: 0 24px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.mm-wrapper .submit-btn {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.mm-wrapper .submit-btn .btn {
+  background-color: #51BA69;
+  padding: 10px;
+  width: 100%;
+  border-radius: 3px;
+  background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
+}
+.mm-wrapper .phone-icon {
+  width: 18px;
+}
+.mm-wrapper .otp-icon {
+  width: 22px;
+}
+.mm-wrapper .resend-wrapper {
+  height: 30px;
+}
+.mm-wrapper .resend {
+  text-align: right;
+  display: inline-flex;
+  padding-bottom: 0px;
+  position: relative;
+  font-size: 10px;
+  float: right;
+}
+.mm-wrapper .pulse {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #fff 0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  animation: pulse 2s infinite;
+}
+.mm-wrapper .count {
+  font-size: 12px;
+  position: absolute;
+  font-weight: bold;
+}
+.mm-wrapper .resend-text {
+  color: #499dd5;
+  margin-top: -5px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.mm-wrapper .resend-text:disabled {
+  color: #a2a2a2;
+}
+.mm-wrapper .edit-icon {
+  width: 13px;
+  padding-left: 3px;
+  padding-top: 0px;
+}
+.mm-wrapper .edit-contact {
+  text-decoration: underline;
+  color: #ffffff;
+}
+.mm-wrapper .inner-resend {
+  align-items: center;
+  vertical-align: middle;
+  justify-content: center;
+  width: 30px;
+  margin-top: -5px;
+  padding-right: 6px;
+  display: flex;
+}
+.mm-wrapper .otp-error {
+  text-align: center;
+  font-size: 12px;
+  color: #dd423f;
+}
+.mm-wrapper .otp-error span {
+  display: block;
+}
+
+@media screen and (max-width: 480px) {
+  .mm-wrapper {
+    width: 100%;
+  }
+  .mm-wrapper .cod_modal {
+    width: 100%;
+  }
+}
+@media (max-width: 767px) {
+  .new-modal {
+    overflow-y: scroll;
+  }
+  .otp-content {
+    height: auto;
+  }
+}
+@media only screen and (max-width: 950px) {
+  .otp-content {
+    overflow: hidden;
+  }
+}
+@media (max-width: 768px) {
+  .modal-content {
+    height: 100%;    
+    transform: unset;    
+    overflow: hidden;
+    width: 100% !important;
+  }
+}
+/*-------------------------------
+  OTP MODAL STYLE ENDS 
+-------------------------------*/

@@ -1,0 +1,18 @@
+{%- capture page_title -%}
+{{ 'customer.addresses.title' | t }}
+{%- endcapture -%}
+{% render 'page-title', title: page_title %}
+
+<div class="md:px-6 lg:px-12 xl:px-16 2xl:px-48 py-8 md:py-12 lg:py-20 flex">
+    {% render 'customer-navs' %}
+    <div class="px-4 md:px-8 xl:px-16 2xl:px-24 md:w-5/6">
+        <div class="mb-10">
+            <h2 class="text-2xl font-medium mb-6">{{ 'customer.addresses.your_addresses' | t }} ({{ customer.addresses_count }})</h2>
+            <button class="sf__btn sf__btn-primary sf-customer__add-new">{{ 'customer.addresses.add_new' | t }}</button>
+            <div data-address-form>
+                {% render 'form__address', new_or_edit: 'new', address: customer.new_address %}
+            </div>
+        </div>
+        {% render 'customer-addresses' %}
+    </div>
+</div>

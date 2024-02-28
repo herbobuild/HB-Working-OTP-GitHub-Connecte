@@ -1,0 +1,81 @@
+<style>
+.product-per {
+    background: #065c2f;
+    width: 90px;
+    color: #fff;
+  	text-align: right;
+    font-size: 14px;
+    padding-right: 10px;
+}
+  
+.product-seller {
+    background: linear-gradient(93.07deg,rgba(219,183,36,.5) -24.37%,rgba(141,124,34,.5) -8.62%,rgba(219,183,36,.5) 10.39%,rgba(158,133,29,.5) 36.26%,rgba(219,183,36,.5) 47.38%),#E0BB24;
+    width: 90px;
+    font-size: 14px;
+    text-align: right;
+    color: #fff;
+    border-radius: 20px 0px 0 0px;
+    padding-right: 10px;
+}
+  
+  .tags-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+</style>
+
+<div class="sf-prod__{{ section.settings.layout }} layout-slider-1">
+    {% case section.settings.layout %}
+        {% when 'layout-4' %}
+            <div class="lg:container">
+                <div class="flex flex-wrap sf-prod__block sf-prod__container">
+                    <div class="w-full lg:w-1/2">
+                      <div class="sf-prod-media__wrapper">
+                        <div class="sf-product-media__desktop hidden md:block">
+                          {% render 'product-page__slider-1', product_layout: section.settings.layout %}
+                        </div>
+                        <div class="sf-product-media__mobile md:hidden">
+                          {% render 'product-page-mobile-media' %}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-full lg:w-1/2">
+                        {% render 'product-page__info' %}
+                    </div>
+                </div>
+            </div>
+        {% when 'layout-5' %}
+            <div class="sf-prod__block flex flex-wrap sf-prod__container">
+                <div class="w-full md:w-7/12 flex-1">
+                  <div class="sf-prod-media__wrapper">
+                        <div class="sf-product-media__desktop hidden md:block">
+                          {% render 'product-page__slider-1', product_layout: section.settings.layout %}
+                        </div>
+                        <div class="sf-product-media__mobile md:hidden">
+                          {% render 'product-page-mobile-media' %}
+                        </div>
+                      </div>
+                </div>
+                <div class="w-full md:w-5/12 sf-prod__summary">
+                    {% render 'product-page__info' %}
+                </div>
+            </div>
+        {% when 'layout-6' %}
+            <div class="sf-prod__block flex flex-wrap sf-prod__container">
+                <div class="w-full md:w-1/2">
+                  <div class="sf-prod-media__wrapper">
+                    <div class="sf-product-media__desktop hidden md:block">
+                      {% render 'product-page__slider-1', product_layout: section.settings.layout %}
+                    </div>
+                    <div class="sf-product-media__mobile md:hidden">
+                      {% render 'product-page-mobile-media' %}
+                    </div>
+                  </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    {% render 'product-page__info' %}
+                </div>
+            </div>
+    {% endcase %}
+</div>

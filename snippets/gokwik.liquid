@@ -1,0 +1,366 @@
+{% if settings.envType == 'production' %}
+{% assign env = 'pdp' %}
+{% elsif settings.envType == 'sandbox' %}
+{% assign env = 'sandbox.pdp' %}
+{% elsif settings.envType == 'qa' %}
+{% assign env = 'qa.pdp' %}
+{%endif%}
+<script hs-ignore="" src="https://{{env}}.gokwik.co/integration.js?shop={{ shop.url }}"></script>
+<script hs-ignore="">
+{% if settings.goEnable %}
+window.merchantInfo  = {
+        mid: "{{ settings.mid }}",
+        environment: "{{ settings.envType }}",
+        type: "merchantInfo",
+  		storeId: "{{shop.id}}",
+  		fbpixel: "{{settings.fbpixel}}",
+      }
+{% endif %}
+{% if settings.goBuynowEnable %}
+/* gokwik buy now  */
+  function makeXhr(method, url, data, track){ 
+    var xhttp = new XMLHttpRequest();
+    xhttp.open(method, url, true);
+    xhttp.setRequestHeader("Content-type", "application/json"); 
+    xhttp.onload = function() {
+      var status = xhttp.status;
+      var response = xhttp.response;
+       track( status, response)
+    };
+    xhttp.send(data ? JSON.stringify(data) : null); 
+  }
+/* retrieve cart after checkout and refresh the page */ 
+retrieveCart()  
+HTMLElement.prototype.serialize = function(){
+    var obj = {};
+    var elements = this.querySelectorAll( "input, select, textarea" );
+    for( var i = 0; i < elements.length; ++i ) {
+        var element = elements[i];
+        var name = element.name;
+        var value = element.value;
+
+        if( name ) {
+            obj[ name ] = value;
+        }
+    }
+    return JSON.stringify( obj );
+}
+function addCartBuyNow(){
+  var productForm = document.querySelector('.product-form.form').serialize();
+     makeXhr('POST', '/cart/add.js', JSON.parse(productForm), function(j){
+        if(j==200){
+         gokwikSdk.initCheckout(merchantInfo);  
+        }
+      });  
+} 
+function gokwikBuyNow() {
+  if ({{ cart.item_count | json | json }}) {
+    makeXhr('GET', '/cart.js', '', function(statusCode, res){
+      if(statusCode === 200 ){
+        var cartItems = JSON.parse(res).items.map(element=>({
+          id:element.id,
+          quantity: element.quantity,
+          options_with_values : element.options_with_values
+        }));
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        makeXhr('POST', '/cart/clear.js', '', function(statusCode){
+          if(statusCode === 200){
+           addCartBuyNow()
+          }
+        });
+        
+      }
+    });
+  } else {   
+   addCartBuyNow() 
+  } 
+}
+  
+ 
+gokwikSdk.on("modal_closed",()=>{
+      retrieveCart();
+});
+  
+function retrieveCart(){
+   
+   var reTakeCart = JSON.parse(localStorage.getItem('cartItems'));
+   if(reTakeCart && reTakeCart.length){
+    var data = {
+      'items': reTakeCart
+    }
+    makeXhr('POST', '/cart/clear.js', '', function(statusCode){
+       if(statusCode === 200){
+        makeXhr('POST', '/cart/add.js', data, function(j){
+          if(j==200){
+           localStorage.removeItem('cartItems');
+          }
+        });
+       }
+    });
+    
+  } 
+    
+}
+  
+{% endif %} 
+ 
+ 
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+//   onclick="gokwikSdk.initCheckout(merchantInfo);logEvent({})"
+function logEvent() {
+  var url;
+  {% if settings.envType == 'production' %}
+  	url = 'https://hits.gokwik.co/api/v1/events';
+  {% elsif settings.envType == 'sandbox' %}
+  	url = 'https://sandbox-hits.gokwik.co/api/v1/events'
+  {%endif%}
+  var timestamp = Date.now();
+  var userAgent = navigator.userAgent;
+  var merchantId = window.merchantInfo.mid;
+  var name = "gokwik-button-clicked";
+  var eventType = "onGkClick";
+  var type = "event";
+  var adSource = getCookie("_shopify_sa_p")
+  var sessionId = localStorage.getItem('gokwik-sessionID');
+  var version = "1";
+  var analyticObj = { timestamp, userAgent, version, merchantId, name, sessionId, type, adSource, eventType };
+  if (!sessionId) delete analyticObj["sessionId"];
+  if (!adSource) delete analyticObj["adSource"];
+
+  xhrPostCall(url, analyticObj);
+
+};
+
+function xhrPostCall(url, body) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+//       xhr.responseType = 'json';
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onload = function () {
+        const response = JSON.parse(xhr.response);
+        resolve(response);
+      };
+      xhr.onerror = function () {
+        const response = JSON.parse(xhr.response);
+        resolve(response);
+      };
+      xhr.send(JSON.stringify(body));
+    });
+};
+  
+  function  initiateGokwik() {
+  	gokwikSdk.initCheckout(merchantInfo);
+    logEvent();
+  }
+
+</script>
+
+<style>
+{% if settings.goEnable %}
+.gokwik-checkout {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: end;
+  margin: 10px 0;
+}
+.gokwik-checkout button {
+  max-width:100%;
+  width: 100%;
+  border: 1px solid transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: {{ settings.priClr }}!important;
+  position: relative;
+  margin: 0;
+  border-radius: 5px;
+  padding: 5px 10px;
+  min-height:43px;
+}
+#gokwik-buy-now.disabled, .gokwik-disabled{
+  opacity:0.5;
+  cursor: not-allowed;
+  }
+  .gokwik-checkout button:focus {
+  outline: none;
+}
+.gokwik-checkout button > span {
+  display: flex;
+}
+.gokwik-checkout button > span.btn-text {
+  display: flex;
+  flex-direction: column;
+  color: {{ settings.secClr }};
+  align-items: flex-start;
+}
+.gokwik-checkout button > span.btn-text > span:last-child {
+    font-size: 10px;
+    line-height: 10px;
+}
+.gokwik-checkout button > span.btn-text > span:first-child {
+   font-size: 16px;
+}
+.gokwik-checkout button > span.pay-opt-icon img:first-child {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+/* additional */
+.scd__footer .gokwik-checkout button:hover{
+  background:#000!important;
+}
+.checkout_pc.prod__dynamic_checkout.buy-one-click.w-full {
+    display: none!important;
+}
+.sf__pcard-action-atc.flex.justify-center #gokwik-buy-now{
+  display: none!important;
+}
+.product-form__actions .prod__dynamic_checkout {
+    display: none!important;
+}  
+@media(max-width:320px){
+.scd__footer button.sf__btn {
+    font-size: 14px;
+    padding: 0;
+    height: 43px;
+}
+.scd__footer .gokwik-checkout button > span.btn-text > span:first-child {
+   font-size: 14px;
+}
+}
+
+{% endif %}
+  
+{% if settings.goBuynowEnable %}
+ #gokwik-buy-now {
+   background: {{ settings.btnBClr }};
+   max-width: 50%;
+   width: 100%;
+   color: {{ settings.btnTextClr }};
+   cursor: pointer;
+   line-height: 1;
+   border: none;
+   padding: 15px 10px;
+   font-size: 16px;
+    margin-bottom: 0;
+   position:relative;
+   border-radius: 5px;
+    font-weight: 600;
+ }
+ #gokwik-buy-now:hover{
+  background:#51ba69;
+}
+form#sticky-atc-form .shopify-payment-button__button{
+display:none!important;
+}
+form#sticky-atc-form #gokwik-buy-now{
+margin-right:10px;
+}
+@media(max-width:767px){
+form#sticky-atc-form #gokwik-buy-now{
+margin-right:0;
+}
+}
+{% endif %}
+/* Loader CSS */
+  #btn-loader{
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    background:inherit;
+    border-radius:5px;
+  } 
+
+.cir-loader,
+.cir-loader:after {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+}
+.cir-loader {
+  margin: 6px auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 0.5em solid rgba(255, 255, 255, 0.2);
+  border-right: 0.5em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 0.5em solid rgba(255, 255, 255, 0.2);
+  border-left: 0.5em solid #ffffff;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+</style> 
+<script>
+   function onCheckoutClick(e){
+                const loader = e.children[2];
+                loader.setAttribute("id","btn-loader");
+                e.disabled = true
+                e.style.cursor = "not-allowed";
+    		    initiateGokwik();
+                loader.style.display = "flex";
+        setTimeout(() =>{
+                 loader.style.display = "none";
+  				  e.disabled = false
+                  e.style.cursor = "pointer";
+        loader.removeAttribute("id")
+       },3000)
+  }
+     function onBuyNowClick(e){
+                const loader = e.children[0];
+     			console.log(loader);
+                loader.setAttribute("id","btn-loader");
+                e.disabled = true
+                e.style.cursor = "not-allowed";
+    		    gokwikBuyNow();
+                loader.style.display = "flex";
+        setTimeout(() =>{
+                 loader.style.display = "none";
+  				  e.disabled = false
+                  e.style.cursor = "pointer";
+        loader.removeAttribute("id")
+       },3000)
+  }
+</script>

@@ -1,0 +1,44 @@
+{%- capture class -%}
+  sf-logo sf-logo--mobile px-4 {{ box_size }} {{ justify | default: 'justify-center' }} {% if header_settings.logo %}has-logo-img{% endif %}
+{%- endcapture -%}
+{% capture logo_alt %}{{ section.settings.logo.alt | default: shop.name }}{% endcapture %}
+
+{% liquid
+  assign is_svg = false
+  assign logo = header_settings.logo_mobile_svg
+  assign default_logo = header_settings.logo
+  assign logo_mobile = header_settings.logo_mobile
+  assign logo_svg = header_settings.logo_svg
+
+  unless logo == blank
+    assign is_svg = true
+  else
+    assign logo = header_settings.logo_mobile
+    if logo == blank
+      assign logo = header_settings.logo_svg
+      assign is_svg = true
+    endif
+    if logo == blank
+      assign is_svg = false
+      assign logo = header_settings.logo
+    endif
+  endunless
+%}
+
+<div class="{{ class | strip_newlines }}">
+    {% if logo != blank %}
+      <a href="{{ routes.root_url }}" class="block py-2.5 logo-img relative" title="{{ shop.name }}">
+        {% if is_svg %}
+          <div class="sf-image sf-logo-mobile">
+            <img loading="lazy" src="{{ logo }}" alt="{{ logo_alt }}">
+          </div>
+        {% else %}
+          {% render 'responsive-image', image_class: 'inline-block', image: logo, wrapper_class: 'sf-logo-mobile', alt: logo_alt %}
+        {% endif %}
+      </a>
+    {% else %}
+      <a href="{{ routes.root_url }}" class="block text-center">
+        <strong>{{ header_settings.logo_text | default: shop.name }}</strong>
+      </a>
+    {% endif %}
+</div>

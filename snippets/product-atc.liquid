@@ -1,0 +1,32 @@
+{% assign atc_text = 'products.product.add_to_cart' | t %}
+
+{%- capture is_preorder -%}{%- render 'check-preorder', product: product -%}{%- endcapture -%}
+{% if is_preorder == "true" %}
+  {%- capture btn_text -%}
+    {% render 'new-locale', key: 'products.product.preorder' %}
+  {%- endcapture -%}
+  <input type="hidden" name="properties[_{% render 'new-locale', key: 'products.product.preorder_note' %}]" value="true">
+  <input type="hidden" name="properties[_foxDiscount[plugin]]" value="PreOrder">
+  <input type="hidden" name="properties[_foxDiscount[offer_id]]" value="{{ product.metafields.foxkit.preorder.id }}">
+{% endif %}
+<div class="para_at_btn">
+<button
+  type="submit"
+  name="add"
+  onclick="_tfa.push({notify: 'event', name: 'addtocart', id: 1488388});"
+  class="w-9/12 h-[46px] add-to-cart sf__btn flex-grow shrink not-change relative mr-3 {{ class }} {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}"
+  data-atc-text="{{ btn_text | default: atc_text }}"
+>
+  {% render 'atc-spinner' %}
+  <span class="not-change atc-text">
+    {% if product.available %}
+      {{ btn_text | default: atc_text }}
+    {% else %}
+      {{ 'products.product.sold_out' | t }}
+    {% endif %}
+  </span>
+</button>
+{% if product.available %}
+         {% render 'gokwik-buy-now' %}
+{% endif %}
+</div>

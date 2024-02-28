@@ -1,0 +1,15 @@
+{% if settings.goEnable %}
+<div class="gokwik-checkout"{% if settings.hideFlow %} style="display:none !important;" {% endif %}>
+  <button type='button' class="btn sf__btn" onclick="onCheckoutClick(this)">
+            <span class="btn-text" >
+                <span>{{ settings.main-titile }}</span>
+                <span>{{ settings.sub-titile }}</span>
+            </span>
+<!--           <span class="pay-opt-icon">
+             <img class="lazyload hs-lazyload hs-id-6e700ac1" data-src="https://cdn.gokwik.co/v4/images/upi-icons.svg" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="/>
+             <img class="lazyload hs-lazyload hs-id-f7c1d17f" data-src="https://cdn.gokwik.co/v4/images/right-arrow.svg" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="/>
+          </span> -->
+    <div style="display:none"><div class="cir-loader">Loading..</div></div>
+  </button>
+</div>
+{% endif %}

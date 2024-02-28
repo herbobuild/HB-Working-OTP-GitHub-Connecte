@@ -1,0 +1,115 @@
+{%- capture body_classes -%}
+template-{{ template.name | handle }} {{ template.name }}-{{ template.suffix }} {{ template.name | append: '-' | append: handle }} {% if cart.item_count == 0 %}cart-empty{% endif %}
+{%- endcapture -%}
+
+{% liquid
+  assign enable_rtl = settings.enable_rtl
+  assign language_support_rtl = settings.language_support_rtl
+  if enable_rtl and language_support_rtl != blank
+    assign shop_locale = localization.language.iso_code
+    assign language_support_rtl_list = language_support_rtl | split: ','
+    assign is_rtl = language_support_rtl_list | where: shop_locale
+    if is_rtl.size > 0
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+<!doctype html>
+<html
+  class="no-js supports-no-cookies"
+  lang="{{ request.locale.iso_code }}"
+  style="--sf-page-opacity: 0;"
+  data-template="{{ template.name }}"
+  {% if enable_rtl %}dir="rtl"{% endif %}
+>
+<head>
+{% render 'hs-critical-css' %}
+
+{% include 'hyperspeed-imports' %}
+
+<!-- Adyogi Google --> 
+<meta name="google-site-verification" content="FZVdKOvzltsqAwLCOM_g9LcZ_CFJWJFb90CIZfxoiyk" />
+<!-- End Adyogi Google --> 
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N8KXCXH');</script> 
+<!-- End Google Tag Manager -->
+<!-- WEBENGAGE INTEGRATION VARIABLES --> {% include 'webengage_variables' %}
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	<meta name="theme-color" content="{{ settings.color_primary }}">
+  
+   {% if template contains 'herbobuildimage' %}
+
+{% endif %}
+
+    {% if template contains 'reviewspage' %}
+<meta name="robots" content="noindex">
+{% endif %}
+
+
+  {% render 'preload' %}
+  {% render 'SEO' %}
+  {% render 'social-meta-tags' %}
+   {% render 'gokwik' %}
+  {% render 'font-face' %}
+  {% render 'critical-css' %}
+  {% render 'critical-scripts' %}
+  {% render 'style-tags' %}
+  {% render 'custom-code-head' %}
+
+  {% comment %} {% render 'content_for_header' %} {% endcomment %}
+  {{ content_for_header }}
+  
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=NSRYFSTXMS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NSRYFSTXMS',{ 'groups': 'GA4'});
+</script>
+</head>
+<body
+  id="sf-theme" style="opacity: 0;"
+  class="{{ body_classes }} relative min-h-screen{% if customer %} customer-logged-in{% endif %}"
+  {% if template.name == 'product' %}data-product-id="{{ product.id }}"{% endif %}
+>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8KXCXH"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  {% render 'theme-data' %}
+  {% section 'annoucement' %}
+  {% section 'header' %}
+  {% render 'scroll-top-button' %}
+
+  <main role="main" id="MainContent">
+    {{ content_for_layout }}
+    <div id="cart-drawer-container"></div>
+  </main>
+
+  {% section 'footer' %}
+
+    <!--hs-js-import:start-->{% if template.name != 'index' and template.name != 'collection' and template.name != 'product' and template.name != 'cart' %}{% endif %}<!--hs-js-import:end-->
+
+  {% section 'mobile-sticky-bar' %}
+
+  {% render 'custom-code-body' %}
+  {% render 'foxkit-messenger' %}
+  {% render 'script-tags' %}
+
+  {% if request.page_type == "product" or request.page_type == "cart" %}  
+  {% endif %}
+ 
+  
+{% include 'appjetty_zipcoderestrict' %}</body>
+</html>
+

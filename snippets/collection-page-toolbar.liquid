@@ -1,0 +1,65 @@
+{%- assign st = section.settings -%}
+{%- if collection.products.length > 0 -%}
+  {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+  {%- for option in collection.sort_options -%}
+    {% if option.value == sort_by %}
+      {% assign sort_by_name = option.name | escape %}
+      {% break %}
+    {% endif %}
+  {%- endfor -%}
+
+  <div class="sf__collection-toolbar">
+    <div class="sf__toolbar-wrapper">
+      <div class="sf__toggle-filter flex {% unless st.sidebar == 'fixed' %}xl:hidden{% endunless %}">
+        {%- if st.show_filter -%}
+          <button class="sf__sidebar-open {% unless show_filter %}hidden{% else %}flex items-center font-medium mr-4 md:mr-8{% endunless %}">
+              <span class="mr-2">{{ 'collections.toolbar.show_filter' | t }}</span>
+              {% render 'icon', name: 'chevron-down', size: 'extra-small' %}
+          </button>
+        {%- endif -%}
+        {% if st.show_sorting %}
+          <button class="sf__sortmb-icon md:hidden flex items-center font-medium">
+            <span data-sortby-option>{{ sort_by_name }}</span>
+            {% render 'icon', name: 'chevron-down', size: 'custom', class: 'ml-2 w-[12px] h-[12px]' %}
+          </button>
+        {% endif %}
+      </div>
+      {%- if st.show_sorting or st.show_columns_switcher -%}
+        <div class="flex flex-1 items-center justify-between">
+          {% if st.show_sorting %}
+            <div class="font-medium hidden md:block" data-toolbar-sorting>
+              <div class="sf__custom-select">
+                {% render 'collection-filters-sort-by' %}
+              </div>
+            </div>
+          {% endif %}
+          {% if st.show_columns_switcher %}
+            <div class="flex-1"></div>
+            <div class="sf__gridColumn-view flex pl-4 md:pl-7">
+              <button class="flex sf__tooltip-item sf__tooltip-top" data-column="1">
+                {% render 'icon', name: 'view-list', size: 'extra-small' %}
+                <span class="sf__tooltip-content text-[12px]">{{ 'collections.toolbar.view_list' | t }}</span>
+              </button>
+              <button class="flex sf__tooltip-item sf__tooltip-top" data-column="2">
+                {% render 'icon', name: 'view-grid-2column', size: 'extra-small' %}
+                <span class="sf__tooltip-content text-[12px]">{{ 'collections.toolbar.grid_2cloumns' | t }}</span>
+              </button>
+              <button class="hidden md:flex sf__tooltip-item sf__tooltip-top" data-column="3">
+                {% render 'icon', name: 'view-grid-3column', size: 'extra-small' %}
+                <span class="sf__tooltip-content text-[12px]">{{ 'collections.toolbar.grid_3cloumns' | t }}</span>
+              </button>
+              <button class="hidden md:flex sf__tooltip-item sf__tooltip-top" data-column="4">
+                {% render 'icon', name: 'view-grid-4column', size: 'extra-small' %}
+                <span class="sf__tooltip-content text-[12px]">{{ 'collections.toolbar.grid_4cloumns' | t }}</span>
+              </button>
+              <button class="hidden lg:flex sf__tooltip-item sf__tooltip-top" data-column="5">
+                {% render 'icon', name: 'view-grid-5column', size: 'extra-small' %}
+                <span class="sf__tooltip-content text-[12px]">{{ 'collections.toolbar.grid_5cloumns' | t }}</span>
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

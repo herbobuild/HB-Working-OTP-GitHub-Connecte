@@ -1,0 +1,52 @@
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- assign price = variant.price -%}
+{%- assign compare_at_price = variant.compare_at_price -%}
+
+{%- if is_product_card and settings.pcard_show_lowest_prices %}
+  {%- assign price = product.price -%}
+  {%- assign compare_at_price = product.compare_at_price -%}
+{%- endif -%}
+
+{%- capture cp_classes -%}
+  {{- compare_price_class -}} prod__compare_price ml-2 mr-2 line-through text-color-secondary
+{%- endcapture -%}
+
+<div class="product-prices inline-flex items-center flex-wrap">
+  <span class="{{ price_class }} prod__price text-color-regular-price">
+    {%- assign price_text = price | money -%}
+    {%- if is_product_card and settings.pcard_show_lowest_prices and product.price_varies -%}
+      {{- 'products.product.from_text_html' | t: price: price_text -}}
+    {%- else -%}
+      {{- price_text -}}
+    {%- endif -%}
+  </span>
+  <span class="{{ cp_classes }} {% unless compare_at_price > price %}hidden{% endunless %}">
+    {{- compare_at_price | money -}}
+  </span>
+  
+  <!--<span class="py-0.5 px-2  font-medium rounded-xl prod__tag prod__tag-saving prod__tag-discounted{% unless compare_at_price > price %} hidden{% endunless %}">
+                  {% render 'new-locale', key: 'products.product.save_html', param: '{{ amount }}', value: discount %}
+    {% render 'new-locale', key: 'products.product.off_html', param: '{{ amount }}', value: discount %}
+                </span>-->
+  
+  
+  <div class="text-sm product-prices__unit w-full{% unless variant.unit_price_measurement %} hidden{% endunless %}">
+    <span class="visually-hidden visually-hidden--inline">{{ 'products.product.unit_price_label' | t }}</span>
+    <div class="price-unit-price">
+      {%- capture unit_price_separator -%}
+        <span aria-hidden="true">/</span><span class="visually-hidden">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+      {%- endcapture -%}
+      {%- capture unit_price_base_unit -%}
+        <span data-unit-price-base-unit>
+          {%- if variant.unit_price_measurement -%}
+            {%- if variant.unit_price_measurement.reference_value != 1 -%}
+              {{- variant.unit_price_measurement.reference_value -}}
+            {%- endif -%}
+            {{ variant.unit_price_measurement.reference_unit }}
+          {%- endif -%}
+        </span>
+      {%- endcapture -%}
+      <span data-unit-price>{{ variant.unit_price | money }}</span>{{- unit_price_separator -}}{{- unit_price_base_unit -}}
+    </div>
+  </div>
+</div>

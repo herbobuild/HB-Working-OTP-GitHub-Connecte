@@ -1,0 +1,5 @@
+{% if settings.goBuynowEnable %}             
+  <button type="button" onclick="onBuyNowClick(this)" id="gokwik-buy-now"{% if settings.hideFlow %} style="display:none !important;" {% endif %}>{{ settings.buynow-titile }}
+<div style="display:none"><div class="cir-loader">Loading..</div></div>
+</button>  
+{% endif %}
