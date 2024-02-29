@@ -7326,3 +7326,7 @@ body {
 /* .section__header.text-center h2 {
     color: red;
 } */
+
+.section__header.text-center h2 {
+    color: blue;
+}
