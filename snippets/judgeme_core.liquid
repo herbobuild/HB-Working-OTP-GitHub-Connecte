@@ -29,6 +29,18 @@ jdgm.loadCSS(jdgm.CDN_HOST+"widget/base.css"):jdgm.loadCSS(jdgm.CDN_HOST+"shopif
 jdgm.loadJS(jdgm.CDN_HOST+"loader.js"))}))}(document);
 </script>
 
-<noscript>{% render 'hs-defer-css' with filename: 'https://cdn.judge.me/shopify_v2.css', pages: 'collection,index,product' | split: ',', minify: false, local: false %}</noscript>
+<noscript>{% render 'hs-defer-css' with filename, filename: 'https://cdn.judge.me/shopify_v2.css', pages: 'collection,index,product', split: ',', minify: false, local: false %}</noscript>
 <!-- End of Judge.me Core -->
 
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'hs-defer-css' with filename: 'https://cdn.judge.me/shopify_v2.css',
+    pages: 'collection,index,product' | split: ',', minify: false, local: false %}"
+  to: "{% render 'hs-defer-css' with filename, filename: 'https://cdn.judge.me/shopify_v2.css',
+    pages: 'collection,index,product', split: ',', minify: false, local: false %}"
+  position: 1806..1972
+{% endcomment %}

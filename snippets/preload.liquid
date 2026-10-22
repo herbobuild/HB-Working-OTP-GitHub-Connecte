@@ -12,9 +12,25 @@
 <link rel="dns-prefetch" href="https://cdn.shopify.com" crossorigin>
 <link rel="preconnect" href="{{ canonical_url }}" crossorigin>
 <link rel="preconnect" href="https://cdn.shopify.com" crossorigin> 
-{% render 'hs-defer-css' with filename: 'chunk.aio.min.css', pages: 'collection,index,product' | split: ',', minify: false, local: true %}
-{% render 'hs-defer-css' with filename: 'custom.aio.min.css', pages: 'collection,index,product' | split: ',', minify: false, local: true %}
+{% render 'hs-defer-css' with filename, filename: 'chunk.aio.min.css', pages: 'collection,index,product', split: ',', minify: false, local: true %}
+{% render 'hs-defer-css' with filename, filename: 'custom.aio.min.css', pages: 'collection,index,product', split: ',', minify: false, local: true %}
 <link rel="preload" href="{{ 'app.min.aio.min.js' | asset_url }}" as="script">
 <link rel="preload" href="{{ 'foxkit-app.min.aio.min.js' | asset_url }}" as="script">
 <link rel="preload" href="{{ 'lazysizes.min.aio.min.js' | asset_url }}" as="script">
-{% comment %} End Minimog prefetch resources {% endcomment %}
+{% comment %} End Minimog prefetch resources {% endcomment %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'hs-defer-css' with filename: 'chunk.aio.min.css', pages: 'collection,index,product'
+    | split: ',', minify: false, local: true %}"
+  to: "{% render 'hs-defer-css' with filename, filename: 'chunk.aio.min.css', pages:
+    'collection,index,product', split: ',', minify: false, local: true %}"
+  position: 767..914
+- from: "{% render 'hs-defer-css' with filename: 'custom.aio.min.css', pages: 'collection,index,product'
+    | split: ',', minify: false, local: true %}"
+  to: "{% render 'hs-defer-css' with filename, filename: 'custom.aio.min.css', pages:
+    'collection,index,product', split: ',', minify: false, local: true %}"
+  position: 915..1063
+{%- endcomment -%}

@@ -22,14 +22,14 @@
     <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
 
     {{ content_for_header }}
-    {% render 'hs-defer-css' with filename: 'theme.aio.min.css', pages: 'collection,index,product' | split: ',', minify: false, local: true %}
+    {% render 'hs-defer-css' with filename, filename: 'theme.aio.min.css', pages: 'collection,index,product', split: ',', minify: false, local: true %}
 
     {% render 'font-face' %}
     {% render 'critical-scripts' %}
     {% render 'style-tags' %}
     {% render 'critical-css' %}
 
-    {% render 'hs-defer-css' with filename: 'template-giftcard.aio.min.css', pages: 'collection,index,product' | split: ',', minify: false, local: true %}
+    {% render 'hs-defer-css' with filename, filename: 'template-giftcard.aio.min.css', pages: 'collection,index,product', split: ',', minify: false, local: true %}
 
   </head>
 
@@ -137,3 +137,20 @@
     });
   });
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'hs-defer-css' with filename: 'theme.aio.min.css', pages: 'collection,index,product'
+    | split: ',', minify: false, local: true %}"
+  to: "{% render 'hs-defer-css' with filename, filename: 'theme.aio.min.css', pages:
+    'collection,index,product', split: ',', minify: false, local: true %}"
+  position: 1045..1192
+- from: "{% render 'hs-defer-css' with filename: 'template-giftcard.aio.min.css',
+    pages: 'collection,index,product' | split: ',', minify: false, local: true %}"
+  to: "{% render 'hs-defer-css' with filename, filename: 'template-giftcard.aio.min.css',
+    pages: 'collection,index,product', split: ',', minify: false, local: true %}"
+  position: 1326..1485
+{% endcomment %}

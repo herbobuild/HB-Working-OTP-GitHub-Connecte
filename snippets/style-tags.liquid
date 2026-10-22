@@ -155,7 +155,7 @@
 
 <link as="style" rel="preload" href="{{ 'theme.aio.min.css' | asset_url }}" onload="__otsl(this)">
 <link as="style" rel="preload" href="{{ 'chunk.aio.min.css' | asset_url }}" onload="__ocsl(this)">
-{% render 'hs-defer-css' with filename: 'custom.aio.min.css', pages: 'collection,index,product' | split: ',', minify: false, local: true %}
+{% render 'hs-defer-css' with filename, filename: 'custom.aio.min.css', pages: 'collection,index,product', split: ',', minify: false, local: true %}
 {% if settings.enable_rtl %}
 <link as="style" rel="preload" href="{{ 'rtl.aio.min.css' | asset_url }}" onload="__ocsl(this)">
 {% endif %}
@@ -179,3 +179,15 @@
 {% if request.path == '/challenge' %}
   {% render 'customer-challenge-style' %}
 {% endif %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'hs-defer-css' with filename: 'custom.aio.min.css', pages: 'collection,index,product'
+    | split: ',', minify: false, local: true %}"
+  to: "{% render 'hs-defer-css' with filename, filename: 'custom.aio.min.css', pages:
+    'collection,index,product', split: ',', minify: false, local: true %}"
+  position: 6823..6971
+{% endcomment %}

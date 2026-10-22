@@ -3,7 +3,7 @@
 {% assign diff = max | minus: min %}
 {% assign randomNumber = "now" | date:"%N" | module: diff | plus:min %}
 
-{% capture var_9e37c7d2 %}https://zip-validator.appjetty.com/assets/front/css/zipcoderestrict.css?v={{randomNumber}}{% endcapture %}{% render 'hs-defer-css' with filename: var_9e37c7d2, pages: 'collection,index,product' | split: ',', minify: false, local: false %}
+{% capture var_9e37c7d2 %}https://zip-validator.appjetty.com/assets/front/css/zipcoderestrict.css?v={{randomNumber}}{% endcapture %}{% render 'hs-defer-css' with filename, filename: var_9e37c7d2, pages: 'collection,index,product', split: ',', minify: false, local: false %}
 <style>
   .ZipCodeRestrict .success_msg.message,.ZipCodeRestrict .estimation_msg.message,.ZipCodeRestrict .error_msg.message,.ZipCodeRestrict .not_valid_error_msg.message{padding: 5px; margin-top: 10px; margin-bottom: 10px;display:none; padding-left: 10px;}
   .ZipCodeRestrict .zipcodecheck_area img{width: 30px; vertical-align: middle;}
@@ -88,4 +88,20 @@
   
 </script>
 <script crossorigin="anonymous" referrerpolicy="no-referrer" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
-{% render 'hs-defer-css' with filename: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css', pages: 'collection,index,product' | split: ',', minify: false, local: false %}
+{% render 'hs-defer-css' with filename, filename: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css', pages: 'collection,index,product', split: ',', minify: false, local: false %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'hs-defer-css' with filename: var_9e37c7d2, pages: 'collection,index,product'
+    | split: ',', minify: false, local: false %}"
+  to: "{% render 'hs-defer-css' with filename, filename: var_9e37c7d2, pages: 'collection,index,product',
+    split: ',', minify: false, local: false %}"
+  position: 289..430
+- from: "{% render 'hs-defer-css' with filename: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css',
+    pages: 'collection,index,product' | split: ',', minify: false, local: false %}"
+  to: "{% render 'hs-defer-css' with filename, filename: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css',
+    pages: 'collection,index,product', split: ',', minify: false, local: false %}"
+  position: 95052..95265
+{%- endcomment -%}
